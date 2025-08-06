@@ -12,7 +12,7 @@ while true; do
   echo "=========================="
   read -s -p "Password: " input_pwd
   echo ""
-  input_hash=$(echo -n "$input_pwd" | md5sum | awk '{print $1}')
+  input_hash=$(printf "%s" "$input_pwd" | md5sum | awk '{print $1}')
 
   if [ "$input_hash" == "$PASSWORD_HASH" ]; then
     break
