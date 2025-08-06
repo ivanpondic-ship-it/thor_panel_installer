@@ -23,8 +23,12 @@ while true; do
     1)
       echo "Installing Main Server..."
       mkdir -p $INSTALL_DIR
-      wget -q --no-check-certificate "https://drive.google.com/uc?export=download&id=1PMi7EX9JE0JN5Jl7HXMQfzUBT6VvRVHF" -O thor_installer.zip
-      unzip -o thor_installer.zip -d $INSTALL_DIR
+      wget -q --no-check-certificate "https://drive.google.com/uc?export=download&id=1PMi7EX9JE0JN5Jl7HXMQfzUBT6VvRVHF" -O thor_installer.zip &
+      echo "⬇️ Downloading in background..."
+      wait
+      unzip -o thor_installer.zip -d $INSTALL_DIR &> /dev/null &
+      echo "⚙️ Installing in background..."
+      wait
       echo "✅ Main Server Installation completed."
       read -p "[ENTER] Return to menu..."
       ;;
@@ -38,8 +42,12 @@ while true; do
       ;;
     3)
       echo "Updating Main Server..."
-      wget -q --no-check-certificate "https://drive.google.com/uc?export=download&id=1rRJ2Mo_RNLNeAqv6pU1Be1MpUKcVf3N6" -O thor_update.zip
-      unzip -o thor_update.zip -d $INSTALL_DIR
+      wget -q --no-check-certificate "https://drive.google.com/uc?export=download&id=1rRJ2Mo_RNLNeAqv6pU1Be1MpUKcVf3N6" -O thor_update.zip &
+      echo "⬇️ Downloading update in background..."
+      wait
+      unzip -o thor_update.zip -d $INSTALL_DIR &> /dev/null &
+      echo "⚙️ Applying update in background..."
+      wait
       echo "✅ Main Server Update completed."
       read -p "[ENTER] Return to menu..."
       ;;
