@@ -6,19 +6,18 @@
 # Ana dizin bilgisi
 INSTALL_DIR="/opt/thor"
 
-clear
-
-# === Dil Seçimi ===
-echo "====================================="
-echo "      Thor Stream PANEL Kurulum"
-echo "====================================="
-echo "  1) Türkçe"
-echo "  2) English"
-echo "  3) Deutsch"
-echo "====================================="
-read -p "Dil / Language / Sprache: " lang
-
+# === Dil Seçimi Fonksiyonu ===
 select_language() {
+  clear
+  echo "====================="
+  echo " Thor Stream PANEL "
+  echo "====================="
+  echo "  1) Türkçe"
+  echo "  2) English"
+  echo "  3) Deutsch"
+  echo "====================="
+  read -p "Dil / Language / Sprache: " lang
+
   case $lang in
     1)
       MSG_INSTALL="Panel kuruluyor..."
@@ -26,7 +25,7 @@ select_language() {
       MSG_GEO="GeoLite2 verisi güncelleniyor..."
       MSG_EXIT="SSH bağlantısı kapatılsın mı? (e/h): "
       MSG_BACK="Ana menüye dönülüyor..."
-      MENU="\n1) Paneli Kur\n2) Paneli Güncelle\n3) GeoLite Güncelle\n4) SSH'yi Kapat\n5) Dil Seçimini Değiştir\n6) Çıkış\nSeçiminiz: "
+      TITLE="Thor Stream PANEL Ana Menü"
       ;;
     2)
       MSG_INSTALL="Installing panel..."
@@ -34,7 +33,7 @@ select_language() {
       MSG_GEO="Updating GeoLite2 database..."
       MSG_EXIT="Close SSH session after setup? (y/n): "
       MSG_BACK="Returning to main menu..."
-      MENU="\n1) Install Panel\n2) Update Panel\n3) Update GeoLite\n4) Close SSH\n5) Change Language\n6) Exit\nYour choice: "
+      TITLE="Thor Stream PANEL Main Menu"
       ;;
     3)
       MSG_INSTALL="Panel wird installiert..."
@@ -42,7 +41,7 @@ select_language() {
       MSG_GEO="GeoLite2 wird aktualisiert..."
       MSG_EXIT="SSH-Verbindung schließen? (j/n): "
       MSG_BACK="Zurück zum Hauptmenü..."
-      MENU="\n1) Panel installieren\n2) Panel aktualisieren\n3) GeoLite aktualisieren\n4) SSH schließen\n5) Sprache ändern\n6) Beenden\nAuswahl: "
+      TITLE="Thor Stream PANEL Hauptmenü"
       ;;
     *)
       echo "Defaulting to English."
@@ -52,11 +51,24 @@ select_language() {
   esac
 }
 
+# Başlangıçta dil seçimini çağır
 select_language
 
+# === Ana Menü Döngüsü ===
 while true; do
-  echo -e "$MENU"
-  read choice
+  clear
+  echo "=============================="
+  echo "   $TITLE"
+  echo "=============================="
+  echo " 1) Install / Kur / Installieren"
+  echo " 2) Update / Güncelle / Aktualisieren"
+  echo " 3) Update GeoLite / GeoLite Güncelle / GeoLite aktualisieren"
+  echo " 4) Change Language / Dili Değiştir / Sprache ändern"
+  echo " 5) Exit / Çıkış / Beenden"
+  echo " 6) Close SSH / SSH'yi Kapat / SSH schließen"
+  echo "=============================="
+  read -p "Selection: " choice
+
   case $choice in
     1)
       echo "$MSG_INSTALL"
@@ -64,23 +76,30 @@ while true; do
       wget -q --no-check-certificate "https://drive.google.com/uc?export=download&id=1PMi7EX9JE0JN5Jl7HXMQfzUBT6VvRVHF" -O thor_installer.zip
       unzip -o thor_installer.zip -d $INSTALL_DIR
       echo "✅ Kurulum tamamlandı."
-      read -p "[ENTER] Ana menüye dön..."
+      read -p "[ENTER] devam etmek için..."
       ;;
     2)
       echo "$MSG_UPDATE"
       wget -q --no-check-certificate "https://drive.google.com/uc?export=download&id=1rRJ2Mo_RNLNeAqv6pU1Be1MpUKcVf3N6" -O thor_update.zip
       unzip -o thor_update.zip -d $INSTALL_DIR
       echo "✅ Güncelleme tamamlandı."
-      read -p "[ENTER] Ana menüye dön..."
+      read -p "[ENTER] devam etmek için..."
       ;;
     3)
       echo "$MSG_GEO"
       mkdir -p $INSTALL_DIR/geo
       wget -q https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz -O - | tar -xz -C $INSTALL_DIR/geo --strip-components=1
       echo "✅ GeoLite güncellendi."
-      read -p "[ENTER] Ana menüye dön..."
+      read -p "[ENTER] devam etmek için..."
       ;;
     4)
+      select_language
+      ;;
+    5)
+      echo "Çıkılıyor..."
+      break
+      ;;
+    6)
       read -p "$MSG_EXIT" close_ssh
       if [[ "$close_ssh" =~ ^[EeYyJj]$ ]]; then
         echo "SSH kapatılıyor..."
@@ -88,31 +107,9 @@ while true; do
         pkill -KILL -u $(whoami)
       fi
       ;;
-    5)
-      clear
-      echo "Dil seçimi ekranına dönülüyor..."
-      echo "====================="
-      echo " Thor Stream PANEL "
-      echo "====================="
-      read -p "[ENTER] devam etmek için..."
-      clear
-      echo ""
-      echo "====================================="
-      echo "      Thor Stream PANEL Kurulum"
-      echo "====================================="
-      echo "  1) Türkçe"
-      echo "  2) English"
-      echo "  3) Deutsch"
-      echo "====================================="
-      read -p "Dil / Language / Sprache: " lang
-      select_language
-      ;;
-    6)
-      echo "Çıkılıyor..."
-      break
-      ;;
     *)
       echo "Hatalı seçim."
+      read -p "[ENTER] Ana menüye dön..."
       ;;
   esac
 done
