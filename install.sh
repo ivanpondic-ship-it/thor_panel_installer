@@ -2,7 +2,7 @@
 
 # === Thor Stream PANEL Installer Script ===
 INSTALL_DIR="/opt/thor"
-PASSWORD_HASH="dd12d81c105dff2d7fc96fe8e4fdf9d9"  # md5sum of '190314'
+PASSWORD_HASH="dd12d81c105dff2d7fc96fe8e4fdf9d9"
 
 # === Main Menu ===
 while true; do
@@ -15,20 +15,7 @@ while true; do
   echo " 2) Install Load Balancer"
   echo " 3) Update Main Server"
   echo " 4) Update GeoLite"
-  echo " 5)
-      echo "⚠️  This will remove Thor Panel and revert the system to a clean Ubuntu-like state."
-      read -p "Are you sure? (yes/no): " confirm
-      if [[ "$confirm" == "yes" ]]; then
-        echo "🧹 Cleaning system..."
-        rm -rf $INSTALL_DIR
-        rm -f thor_installer.zip thor_update.zip thor_lb_installer.zip
-        echo "✅ Thor Panel removed. System cleaned."
-      else
-        echo "❌ Operation cancelled."
-      fi
-      read -p "[ENTER] Return to menu..."
-      ;;
-    6) Reset System to Clean Ubuntu"
+  echo " 5) Reset System to Clean Ubuntu"
   echo " 6) Exit Installer"
   echo "=============================="
   read -p "Select: " choice
@@ -73,6 +60,19 @@ while true; do
       read -p "[ENTER] Return to menu..."
       ;;
     5)
+      echo "⚠️  This will remove Thor Panel and revert the system to a clean Ubuntu-like state."
+      read -r -p "Are you sure? (yes/no): " confirm
+      if [[ "$confirm" == "yes" ]]; then
+        echo "🧹 Cleaning system..."
+        rm -rf $INSTALL_DIR
+        rm -f thor_installer.zip thor_update.zip thor_lb_installer.zip
+        echo "✅ Thor Panel removed. System cleaned."
+      else
+        echo "❌ Operation cancelled."
+      fi
+      read -p "[ENTER] Return to menu..."
+      ;;
+    6)
       echo "Exiting installer..."
       break
       ;;
