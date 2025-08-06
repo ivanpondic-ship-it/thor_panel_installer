@@ -2,48 +2,14 @@
 
 # === Thor Stream PANEL Installer Script ===
 INSTALL_DIR="/opt/thor"
-PASSWORD_HASH="6a4065b818d6f2e600034f6db79dfb02"
-
-# === Login ===
-retry=0
-while true; do
-  clear
-  echo "=============================="
-  echo "======  V.01.21.2025 ========="
-  echo "🔨 THOR STREAM PANEL LOGIN 🔨"
-  echo "=============================="  
-  printf "Password: "
-  stty -echo
-  read input_pwd
-  stty echo
-  echo ""
-  input_hash=$(printf "%s" "$input_pwd" | md5sum | awk '{print $1}')
-
-  if [ "$input_hash" = "$PASSWORD_HASH" ]; then
-    break
-  else
-    retry=$((retry+1))
-    echo "❌ Access denied. Try again. ($retry/3)"
-    sleep 2
-    if [ $retry -ge 3 ]; then
-      echo "Too many failed attempts. Exiting SSH session."
-      exit 1
-    fi
-  fi
-done
-
-# === Check if server is compatible ===
-echo "Checking server requirements..."
-if ! command -v unzip &> /dev/null || ! command -v wget &> /dev/null; then
-  echo "❌ Required packages (unzip, wget) are missing."
-  exit 1
-fi
+PASSWORD_HASH="dd12d81c105dff2d7fc96fe8e4fdf9d9"  # md5sum of '190314'
 
 # === Main Menu ===
 while true; do
   clear
   echo "=============================="
-  echo "   Thor Stream PANEL Menu"
+  echo "======  V.01.21.2025 ========="
+  echo "🔨 THOR STREAM PANEL LOGIN 🔨"
   echo "=============================="
   echo " 1) Install Main Server"
   echo " 2) Install Load Balancer"
