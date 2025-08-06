@@ -5,18 +5,22 @@ INSTALL_DIR="/opt/thor"
 PASSWORD_HASH="6a4065b818d6f2e600034f6db79dfb02"
 
 # === Login ===
-clear
-echo "=========================="
-echo " Thor Stream PANEL Login "
-echo "=========================="
-read -s -p "Password: " input_pwd
-echo ""
-input_hash=$(echo -n "$input_pwd" | md5sum | awk '{print $1}')
+while true; do
+  clear
+  echo "=========================="
+  echo " Thor Stream PANEL Login "
+  echo "=========================="
+  read -s -p "Password: " input_pwd
+  echo ""
+  input_hash=$(echo -n "$input_pwd" | md5sum | awk '{print $1}')
 
-if [ "$input_hash" != "$PASSWORD_HASH" ]; then
-  echo "❌ Access denied."
-  exit 1
-fi
+  if [ "$input_hash" == "$PASSWORD_HASH" ]; then
+    break
+  else
+    echo "❌ Access denied. Try again."
+    sleep 2
+  fi
+done
 
 # === Check if server is compatible ===
 echo "Checking server requirements..."
